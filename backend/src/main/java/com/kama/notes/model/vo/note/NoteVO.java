@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 @Data
 public class NoteVO {
     private Integer noteId;
+    private Integer categoryId;
     private String content;
     private Boolean needCollapsed = false;
     private String displayContent;
@@ -17,6 +18,7 @@ public class NoteVO {
     private SimpleAuthorVO author;
     private UserActionsVO userActions;
     private SimpleQuestionVO question;
+    private SimpleCategoryVO category;
 
     @Data
     public static class SimpleAuthorVO {
@@ -35,5 +37,14 @@ public class NoteVO {
     public static class SimpleQuestionVO {
         private Integer questionId;
         private String title;
+    }
+
+    /**
+     * 笔记分类信息
+     */
+    @Data
+    public static class SimpleCategoryVO {
+        private Integer categoryId;
+        private String name;
     }
 }

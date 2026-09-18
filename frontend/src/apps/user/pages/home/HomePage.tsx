@@ -24,6 +24,8 @@ const HomePage: React.FC = () => {
     pagination,
     setNoteLikeStatusHandle,
     setNoteCollectStatusHandle,
+    removeNoteHandle,
+    updateNoteHandle,
     loading,
   } = useNotes(searchParams)
 
@@ -43,6 +45,10 @@ const HomePage: React.FC = () => {
               setQueryParams={setSearchParamsHandle}
               setNoteLikeStatusHandle={setNoteLikeStatusHandle}
               setNoteCollectStatusHandle={setNoteCollectStatusHandle}
+              onNoteDeleted={removeNoteHandle}
+              onSaveNoteContent={(noteId, content) =>
+                updateNoteHandle(noteId, { content })
+              }
             />
           </Skeleton>
         </Panel>

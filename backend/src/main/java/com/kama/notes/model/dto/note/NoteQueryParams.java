@@ -20,6 +20,13 @@ public class NoteQueryParams {
     private Integer questionId;
 
     /*
+     * 笔记分类ID
+     * 必须是正整数
+     */
+    @Min(value = 1, message = "笔记分类ID必须是正整数")
+    private Integer categoryId;
+
+    /*
      * 作者ID
      * 必须是正整数且符合系统生成的范围
      */

@@ -25,6 +25,15 @@ public interface NoteLikeMapper {
     int delete(NoteLike noteLike);
 
     /**
+     * 根据笔记ID删除该笔记的所有点赞记录
+     * 用于删除笔记时清理关联数据，避免产生孤儿记录
+     *
+     * @param noteId 笔记ID
+     * @return 返回影响的行数
+     */
+    int deleteByNoteId(@Param("noteId") Integer noteId);
+
+    /**
      * 根据用户ID和笔记ID列表，查找用户点赞过笔记ID列表
      * 此方法用于过滤给定的笔记ID列表，仅返回该用户标记为点赞过笔记ID
      *

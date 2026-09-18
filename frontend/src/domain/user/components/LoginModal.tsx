@@ -31,6 +31,7 @@ const LoginModal: React.FC = () => {
   const { registerHandle } = useRegister()
 
   const [form] = useForm()
+  const emailValue = Form.useWatch('email', form)
 
   // 发送验证码
   const handleSendVerifyCode = async () => {
@@ -60,7 +61,14 @@ const LoginModal: React.FC = () => {
         await loginHandle(values)
         message.success('登录成功')
       } else if (value === 'register') {
-        await registerHandle(values)
+        // 邮箱选填：未填写邮箱时，清除 email/verifyCode 字段，
+        // 避免后端把空字符串当成必填项校验报错
+        const registerValues = { ...values }
+        if (!registerValues.email) {
+          delete registerValues.email
+          delete registerValues.verifyCode
+        }
+        await registerHandle(registerValues)
         message.success('注册成功')
       }
       setOpen(false)
@@ -153,32 +161,45 @@ const LoginModal: React.FC = () => {
               <Input autoComplete={'off'} />
             </Form.Item>
             <Form.Item
-              label="邮箱"
+              label="邮箱（选填）"
               name="email"
-              rules={[
-                { required: true, message: '请输入邮箱' },
-                { type: 'email', message: '邮箱格式不正确' },
-              ]}
+              rules={[{ type: 'email', message: '邮箱格式不正确' }]}
             >
               <Input autoComplete="off" />
             </Form.Item>
-            <Row gutter={8} align="middle">
-              <Col flex="auto">
-                <Form.Item
-                  label="验证码"
-                  name="verifyCode"
-                  rules={[
-                    { required: true, message: '请输入验证码' },
-                    { len: 6, message: '验证码长度必须为6位' },
-                  ]}
-                >
-                  <Input autoComplete="off" />
-                </Form.Item>
-              </Col>
-              <Col>
-                <CountDownButton handleSendVerifyCode={handleSendVerifyCode} />
-              </Col>
-            </Row>
+            {emailValue && (
+              <Row gutter={8} align="middle">
+                <Col flex="auto">
+                  <Form.Item
+                    label="验证码"
+                    name="verifyCode"
+                    rules={[
+                      ({ getFieldValue }) => ({
+                        validator(_, value) {
+                          const email = getFieldValue('email')
+                          if (email && !value) {
+                            return Promise.reject(new Error('请输入验证码'))
+                          }
+                          if (value && value.length !== 6) {
+                            return Promise.reject(
+                              new Error('验证码长度必须为6位'),
+                            )
+                          }
+                          return Promise.resolve()
+                        },
+                      }),
+                    ]}
+                  >
+                    <Input autoComplete="off" />
+                  </Form.Item>
+                </Col>
+                <Col>
+                  <CountDownButton
+                    handleSendVerifyCode={handleSendVerifyCode}
+                  />
+                </Col>
+              </Row>
+            )}
           </>
         )}
 

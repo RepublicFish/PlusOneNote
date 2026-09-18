@@ -22,6 +22,12 @@
           AND user_id = #{userId}
     </delete>
 
+    <!-- 根据笔记ID删除该笔记的所有收藏记录 -->
+    <delete id="deleteByNoteId">
+        DELETE FROM note_collect
+        WHERE note_id = #{noteId}
+    </delete>
+
     <!-- 根据用户ID和笔记ID查询收藏记录 -->
     <select id="findByNoteIdAndUserId" resultMap="BaseResultMap">
         SELECT *

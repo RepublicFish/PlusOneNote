@@ -6,8 +6,10 @@ import { QuestionCard } from '../../question'
 import NoteContent from './NoteContent.tsx'
 import DisplayContent from './DisplayContent.tsx'
 import ExpandButton from './ExpandButton.tsx'
-import { Divider } from 'antd'
+import { Divider, Tag } from 'antd'
+import { Link } from 'react-router-dom'
 import OptionsCard from './OptionsCard.tsx'
+import { NOTE_CATEGORY } from '../../../apps/user/router/config.ts'
 
 interface NoteItemProps {
   note?: NoteWithRelations
@@ -22,6 +24,10 @@ interface NoteItemProps {
   showQuestion?: boolean // 是否展示题目信息
   showOptions?: boolean // 是否展示点赞/收藏/评论等按钮
   onRefresh?: () => void
+  /** 删除笔记成功后的回调（用于把该笔记从列表中移除） */
+  onNoteDeleted?: (noteId: number) => void
+  /** 保存笔记正文（修改笔记） */
+  onSaveNoteContent?: (noteId: number, content: string) => Promise<unknown>
 }
 
 const NoteItem: React.FC<NoteItemProps> = ({
@@ -34,6 +40,8 @@ const NoteItem: React.FC<NoteItemProps> = ({
   handleCollectionQueryParams,
   handleSelectedNoteId,
   onRefresh,
+  onNoteDeleted,
+  onSaveNoteContent,
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(false)
 
@@ -50,7 +58,21 @@ const NoteItem: React.FC<NoteItemProps> = ({
   return (
     <>
       <div className="flex w-full flex-col gap-4">
-        {showQuestion && <QuestionCard question={note?.question} />}
+        {/* 题目笔记展示题目；分类笔记展示分类标签 */}
+        {showQuestion && note?.question && (
+          <QuestionCard question={note.question} />
+        )}
+        {note?.category && (
+          <div>
+            <Link
+              to={`${NOTE_CATEGORY}?categoryId=${note.category.categoryId}`}
+            >
+              <Tag color="blue" className="cursor-pointer">
+                {note.category.name}
+              </Tag>
+            </Link>
+          </div>
+        )}
         {showAuthor && <AuthorCard note={note} />}
         {isCollapsed ? (
           <DisplayContent displayContent={note?.displayContent ?? ''} />
@@ -72,6 +94,8 @@ const NoteItem: React.FC<NoteItemProps> = ({
             handleCollectionQueryParams={handleCollectionQueryParams}
             handleSelectedNoteId={handleSelectedNoteId}
             onRefresh={onRefresh}
+            onNoteDeleted={onNoteDeleted}
+            onSaveNoteContent={onSaveNoteContent}
           />
         )}
       </div>

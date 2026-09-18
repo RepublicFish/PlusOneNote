@@ -5,6 +5,8 @@ import { MenuProps } from 'antd'
 import {
   HOME_PAGE,
   MESSAGE_CENTER,
+  NOTE_CATEGORY,
+  NOTE_CREATE,
   QUESTION_LIST,
   QUESTION_SET,
 } from '../../router/config.ts'
@@ -25,12 +27,20 @@ const items: MenuItem[] = [
     key: 'home',
   },
   {
+    label: <NavLink to={NOTE_CATEGORY}>笔记分类</NavLink>,
+    key: 'note-categories',
+  },
+  {
     label: <NavLink to={QUESTION_SET}>题库</NavLink>,
     key: 'question-set',
   },
   {
     label: <NavLink to={QUESTION_LIST}>题单</NavLink>,
     key: 'question-list',
+  },
+  {
+    label: <NavLink to={NOTE_CREATE}>写笔记</NavLink>,
+    key: 'note-create',
   },
 ]
 

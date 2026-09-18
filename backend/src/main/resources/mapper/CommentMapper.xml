@@ -44,6 +44,11 @@
         DELETE FROM comment WHERE comment_id = #{commentId}
     </delete>
 
+    <!-- 删除某篇笔记下的所有评论（含二级回复） -->
+    <delete id="deleteByNoteId">
+        DELETE FROM comment WHERE note_id = #{noteId}
+    </delete>
+
     <!-- 根据ID查询评论 -->
     <select id="findById" resultMap="commentMap">
         SELECT * FROM comment WHERE comment_id = #{commentId}

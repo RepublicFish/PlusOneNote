@@ -25,8 +25,15 @@ public class Note {
 
     /**
      * 问题ID
+     * 可为空：为空表示该笔记不绑定任何题目，仅通过笔记分类归类
      */
     private Integer questionId;
+
+    /**
+     * 笔记分类ID
+     * 可为空：为空表示该笔记是绑定题目的笔记
+     */
+    private Integer categoryId;
 
     /**
      * 笔记内容

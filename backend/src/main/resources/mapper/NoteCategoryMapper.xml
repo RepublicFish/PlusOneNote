@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kama.notes.mapper.NoteCategoryMapper">
+
+    <resultMap id="BaseResultMap" type="com.kama.notes.model.entity.NoteCategory">
+        <id column="category_id" property="categoryId"/>
+        <result column="name" property="name"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="categoryId"
+            parameterType="com.kama.notes.model.entity.NoteCategory">
+        INSERT INTO note_category (name)
+        VALUES (#{name})
+    </insert>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT *
+        FROM note_category
+        ORDER BY category_id ASC
+    </select>
+
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT *
+        FROM note_category
+        WHERE category_id = #{categoryId}
+    </select>
+
+    <select id="findByName" resultMap="BaseResultMap">
+        SELECT *
+        FROM note_category
+        WHERE name = #{name}
+    </select>
+
+    <select id="findByIdBatch" resultMap="BaseResultMap">
+        <if test="categoryIds != null and categoryIds.size > 0">
+            SELECT * FROM note_category
+            WHERE category_id IN
+            <foreach collection="categoryIds" item="categoryId" open="(" separator="," close=")">
+                #{categoryId}
+            </foreach>
+        </if>
+        <if test="categoryIds == null or categoryIds.size == 0">
+            SELECT * FROM note_category WHERE 1 = 0
+        </if>
+    </select>
+
+</mapper>

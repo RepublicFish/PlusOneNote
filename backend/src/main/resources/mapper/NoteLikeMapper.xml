@@ -33,4 +33,10 @@
         WHERE user_id = #{userId}
           AND note_id = #{noteId}
     </delete>
+
+    <delete id="deleteByNoteId">
+        DELETE
+        FROM note_like
+        WHERE note_id = #{noteId}
+    </delete>
 </mapper>

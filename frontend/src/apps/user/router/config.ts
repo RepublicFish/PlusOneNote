@@ -15,6 +15,16 @@ export const QUESTION_SET = '/question-set'
 export const QUESTION_LIST = '/question-list'
 
 /**
+ * 笔记分类路径
+ */
+export const NOTE_CATEGORY = '/note-categories'
+
+/**
+ * 创建笔记路径
+ */
+export const NOTE_CREATE = '/note-create'
+
+/**
  * 个人主页
  */
 export const USER_HOME = '/user'

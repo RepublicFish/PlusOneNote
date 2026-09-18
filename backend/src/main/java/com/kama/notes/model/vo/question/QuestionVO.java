@@ -12,6 +12,7 @@ public class QuestionVO {
     private String title;
     private Integer difficulty;
     private String examPoint;
+    private String description;
     private Integer viewCount;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

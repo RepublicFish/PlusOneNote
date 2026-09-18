@@ -4,8 +4,8 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="questionId"
             parameterType="com.kama.notes.model.entity.Question">
-        INSERT INTO question (category_id, title, difficulty, exam_point)
-        VALUES (#{categoryId}, #{title}, #{difficulty}, #{examPoint})
+        INSERT INTO question (category_id, title, difficulty, exam_point, description)
+        VALUES (#{categoryId}, #{title}, #{difficulty}, #{examPoint}, #{description})
     </insert>
 
     <select id="findById" resultType="com.kama.notes.model.entity.Question">
@@ -94,6 +94,9 @@
             </if>
             <if test="question.examPoint != null">
                 exam_point = #{question.examPoint},
+            </if>
+            <if test="question.description != null">
+                description = #{question.description},
             </if>
         </set>
         WHERE question_id = #{question.questionId}

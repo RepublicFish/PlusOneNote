@@ -19,6 +19,8 @@ interface NoteListProps {
   showAuthor?: boolean // 是否展示作者信息
   showQuestion?: boolean // 是否展示题目信息
   showOptions?: boolean // 是否展示点赞/收藏/评论等按钮
+  onNoteDeleted?: (noteId: number) => void // 删除笔记成功后的回调
+  onSaveNoteContent?: (noteId: number, content: string) => Promise<unknown> // 保存笔记正文（修改笔记）
 }
 
 const NoteList: React.FC<NoteListProps> = ({
@@ -31,6 +33,8 @@ const NoteList: React.FC<NoteListProps> = ({
   showOptions = true,
   showAuthor = true,
   showQuestion = true,
+  onNoteDeleted,
+  onSaveNoteContent,
 }) => {
   /**
    * 处理 分页变化
@@ -107,6 +111,8 @@ const NoteList: React.FC<NoteListProps> = ({
           showOptions={showOptions}
           showAuthor={showAuthor}
           showQuestion={showQuestion}
+          onNoteDeleted={onNoteDeleted}
+          onSaveNoteContent={onSaveNoteContent}
         />
       ))}
       {noteList.length > 0 && (

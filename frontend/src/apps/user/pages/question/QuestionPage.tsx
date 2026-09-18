@@ -70,6 +70,7 @@ const QuestionPage: React.FC = () => {
     updateNoteHandle,
     setNoteLikeStatusHandle,
     setNoteCollectStatusHandle,
+    removeNoteHandle,
   } = useNotes(noteQueryParams)
 
   /**
@@ -93,7 +94,10 @@ const QuestionPage: React.FC = () => {
 
     try {
       if (!question?.userNote.finished) {
-        const noteId = await createNoteHandle(Number(questionId), value)
+        const noteId = await createNoteHandle({
+          content: value,
+          questionId: Number(questionId),
+        })
         toggleEditorVisible()
         // 校验一下 noteId
         if (noteId) {
@@ -183,6 +187,10 @@ const QuestionPage: React.FC = () => {
               setQueryParams={setNoteQueryParams}
               setNoteLikeStatusHandle={setNoteLikeStatusHandle}
               setNoteCollectStatusHandle={setNoteCollectStatusHandle}
+              onNoteDeleted={removeNoteHandle}
+              onSaveNoteContent={(noteId, content) =>
+                updateNoteHandle(noteId, { content })
+              }
             />
           </Panel>
         </div>

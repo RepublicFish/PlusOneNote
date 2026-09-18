@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kama.notes.mapper.StatisticMapper">
+    <!-- 统计表按日期唯一；同一天重复执行定时任务时更新而不是插入新行，
+         避免仪表盘里同一天出现两条记录 -->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO statistic (login_count, register_count, total_register_count, note_count, submit_note_count,
                                total_note_count, date)
         VALUES (#{loginCount}, #{registerCount}, #{totalRegisterCount}, #{noteCount}, #{submitNoteCount},
                 #{totalNoteCount}, #{date})
+        ON DUPLICATE KEY UPDATE login_count          = VALUES(login_count),
+                                register_count       = VALUES(register_count),
+                                total_register_count = VALUES(total_register_count),
+                                note_count           = VALUES(note_count),
+                                submit_note_count    = VALUES(submit_note_count),
+                                total_note_count     = VALUES(total_note_count)
     </insert>
 
     <select id="countStatistic" resultType="integer">

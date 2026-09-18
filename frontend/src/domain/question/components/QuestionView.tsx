@@ -3,6 +3,7 @@ import { QuestionWithUserNote } from '../types/types.ts'
 import { Button } from 'antd'
 import { EditOutlined } from '@ant-design/icons'
 import { DifficultyTag } from '../index.ts'
+import { MarkdownRender } from '../../../base/components'
 
 interface QuestionViewProps {
   question?: QuestionWithUserNote
@@ -42,6 +43,14 @@ const QuestionView: React.FC<QuestionViewProps> = ({
             <span>{question?.examPoint}</span>
           </div>
         </div>
+        {question?.description && (
+          <div className="mb-4 border-t border-gray-100 pt-4">
+            <div className="mb-2 text-sm font-medium text-neutral-600">
+              题目描述
+            </div>
+            <MarkdownRender markdown={question.description} />
+          </div>
+        )}
         <Button
           type="primary"
           icon={<EditOutlined />}

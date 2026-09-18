@@ -29,6 +29,15 @@ public interface NoteCollectMapper {
     int delete(@Param("noteId") Integer noteId, @Param("userId") Long userId);
 
     /**
+     * 根据笔记ID删除该笔记的所有收藏记录
+     * 用于删除笔记时清理关联数据，避免产生孤儿记录
+     *
+     * @param noteId 笔记ID
+     * @return 影响的行数
+     */
+    int deleteByNoteId(@Param("noteId") Integer noteId);
+
+    /**
      * 查找收藏记录
      *
      * @param noteId 笔记ID

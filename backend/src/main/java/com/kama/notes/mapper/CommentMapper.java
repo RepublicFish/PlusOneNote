@@ -34,6 +34,15 @@ public interface CommentMapper {
     void deleteById(Integer commentId);
 
     /**
+     * 根据笔记ID删除该笔记下的所有评论（含二级回复，它们同属该 note_id）
+     * 用于删除笔记时清理关联数据，避免产生孤儿记录
+     *
+     * @param noteId 笔记ID
+     * @return 删除记录数
+     */
+    int deleteByNoteId(Integer noteId);
+
+    /**
      * 根据ID查询评论
      *
      * @param commentId 评论ID

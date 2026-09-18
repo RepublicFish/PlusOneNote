@@ -7,6 +7,9 @@
             <if test="params.questionId != null">
                 AND question_id = #{params.questionId}
             </if>
+            <if test="params.categoryId != null">
+                AND category_id = #{params.categoryId}
+            </if>
             <if test="params.authorId != null">
                 AND author_id = #{params.authorId}
             </if>
@@ -71,15 +74,25 @@
         WHERE author_id = #{authorId}
     </select>
 
+    <!-- 插入笔记时一并写入全文检索向量。
+         若不写这一列，新建的笔记 search_vector 为 NULL，
+         在搜索里永远查不到（只有被编辑过一次才会补上）。
+         这里带上题目/考点/分类名，与 update 时保持同一口径。 -->
     <insert id="insert" useGeneratedKeys="true" keyProperty="noteId">
-        INSERT INTO note (question_id, author_id, content)
-        VALUES (#{questionId}, #{authorId}, #{content})
+        INSERT INTO note (question_id, category_id, author_id, content, search_vector)
+        VALUES (#{questionId}, #{categoryId}, #{authorId}, #{content},
+                CONCAT_WS(' ',
+                    IFNULL((SELECT q.title      FROM question q      WHERE q.question_id = #{questionId}), ''),
+                    IFNULL((SELECT q.exam_point FROM question q      WHERE q.question_id = #{questionId}), ''),
+                    IFNULL((SELECT nc.name      FROM note_category nc WHERE nc.category_id = #{categoryId}), ''),
+                    #{content}))
     </insert>
 
     <resultMap id="BaseResultMap" type="com.kama.notes.model.entity.Note">
         <id column="note_id" property="noteId"/>
         <result column="author_id" property="authorId"/>
         <result column="question_id" property="questionId"/>
+        <result column="category_id" property="categoryId"/>
         <result column="content" property="content"/>
         <result column="like_count" property="likeCount"/>
         <result column="comment_count" property="commentCount"/>
@@ -93,9 +106,18 @@
     </select>
 
     <update id="update">
-        UPDATE note
-        SET content = #{content}
-        WHERE note_id = #{noteId}
+        <!-- 修改正文的同时刷新全文检索向量，
+             否则被编辑过的笔记在搜索里仍是旧内容 -->
+        UPDATE note n
+        LEFT JOIN question q       ON n.question_id = q.question_id
+        LEFT JOIN note_category nc ON n.category_id = nc.category_id
+        SET n.content = #{content},
+            n.search_vector = CONCAT_WS(' ',
+                IFNULL(q.title, ''),
+                IFNULL(q.exam_point, ''),
+                IFNULL(nc.name, ''),
+                #{content})
+        WHERE n.note_id = #{noteId}
     </update>
 
     <update id="likeNote">
@@ -238,11 +260,14 @@
         WHERE DATE(created_at) = CURDATE()
     </select>
 
+    <!-- 当天提交笔记的人数（去重作者）。
+         注意：这里不能加 GROUP BY author_id，否则会返回多行，
+         而接口返回类型是 int，MyBatis 会抛 TooManyResultsException，
+         导致每日统计定时任务整体失败、statistic 表写不进数据。 -->
     <select id="getTodaySubmitNoteUserCount" resultType="integer">
         SELECT COUNT(DISTINCT author_id)
         FROM note
         WHERE DATE(created_at) = CURDATE()
-        GROUP BY author_id
     </select>
 
     <select id="getTotalNoteCount" resultType="integer">

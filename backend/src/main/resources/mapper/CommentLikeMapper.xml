@@ -21,6 +21,14 @@
         WHERE comment_id = #{commentId} AND user_id = #{userId}
     </delete>
 
+    <!-- 删除某篇笔记下所有评论的点赞记录（须在删除 comment 之前执行） -->
+    <delete id="deleteByNoteId">
+        DELETE FROM comment_like
+        WHERE comment_id IN (
+            SELECT comment_id FROM comment WHERE note_id = #{noteId}
+        )
+    </delete>
+
     <!-- 查询用户点赞的评论ID列表 -->
     <select id="findUserLikedCommentIds" resultType="integer">
         SELECT DISTINCT comment_id FROM comment_like

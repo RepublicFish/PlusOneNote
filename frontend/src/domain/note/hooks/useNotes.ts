@@ -8,6 +8,7 @@ import { noteService } from '../service/noteService.ts'
 import { Pagination } from '../../../request'
 import { message } from 'antd'
 import { useUser } from '../../user/hooks/useUser.ts'
+import { NoteCategory } from '../../noteCategory'
 
 /**
  * 获取笔记列表
@@ -41,6 +42,7 @@ export function useNotes(noteQueryParams: NoteQueryParams) {
     noteQueryParams,
     noteQueryParams.authorId,
     noteQueryParams.questionId,
+    noteQueryParams.categoryId,
     noteQueryParams.collectionId,
     noteQueryParams.page,
     noteQueryParams.pageSize,
@@ -50,15 +52,15 @@ export function useNotes(noteQueryParams: NoteQueryParams) {
   ])
 
   function createNewNoteWithRelations(
-    questionId: number,
+    params: CreateNoteParams,
     noteId: number,
-    content: string,
+    category?: NoteCategory,
   ): NoteWithRelations {
     return {
       noteId,
-      content,
+      content: params.content,
       needCollapsed: true,
-      displayContent: content,
+      displayContent: params.content,
       likeCount: 0,
       commentCount: 0,
       collectCount: 0,
@@ -68,10 +70,15 @@ export function useNotes(noteQueryParams: NoteQueryParams) {
         username: user.username,
         avatarUrl: user.avatarUrl,
       },
-      question: {
-        questionId: questionId,
-        title: '',
-      },
+      // 题目笔记才有题目信息
+      question: params.questionId
+        ? {
+            questionId: params.questionId,
+            title: '',
+          }
+        : undefined,
+      // 分类笔记才有分类信息
+      category: category,
       userActions: {
         isLiked: false,
         isCollected: false,
@@ -81,27 +88,25 @@ export function useNotes(noteQueryParams: NoteQueryParams) {
 
   /**
    * 创建笔记
-   * @param questionId 题目 ID
-   * @param content 笔记内容
+   *
+   * @param params 创建参数：题目笔记传 questionId，分类笔记传 categoryId
+   * @param category 分类笔记的分类信息，用于本地列表即时展示
    */
   async function createNoteHandle(
-    questionId: number,
-    content: string,
+    params: CreateNoteParams,
+    category?: NoteCategory,
   ): Promise<number | undefined> {
-    if (!content.trim()) {
+    if (!params.content.trim()) {
       message.info('笔记内容为空')
       return
     }
 
     // data == noteId
-    const { data } = await noteService.createNoteService({
-      content,
-      questionId,
-    })
+    const { data } = await noteService.createNoteService(params)
 
     setNoteList((prevNoteList) => {
       return [
-        createNewNoteWithRelations(questionId, data.noteId, content),
+        createNewNoteWithRelations(params, data.noteId, category),
         ...prevNoteList,
       ]
     })
@@ -109,7 +114,10 @@ export function useNotes(noteQueryParams: NoteQueryParams) {
   }
 
   /**
-   * 更新笔记
+   * 更新笔记（修改正文）
+   *
+   * 除了 content，同时刷新列表用于折叠展示的 displayContent，
+   * 并取消折叠，否则列表里仍会显示修改前的摘要。
    */
   async function updateNoteHandle(
     noteId: number,
@@ -123,6 +131,8 @@ export function useNotes(noteQueryParams: NoteQueryParams) {
           return {
             ...note,
             content: updateBody.content,
+            displayContent: updateBody.content,
+            needCollapsed: false,
           }
         }
         return note
@@ -176,12 +186,23 @@ export function useNotes(noteQueryParams: NoteQueryParams) {
     })
   }
 
+  /**
+   * 从当前列表中移除某条笔记
+   * 用于「删除笔记」成功后，让该笔记立刻从列表里消失
+   */
+  function removeNoteHandle(noteId: number) {
+    setNoteList((prevNoteList) =>
+      prevNoteList.filter((note) => note.noteId !== noteId),
+    )
+  }
+
   return {
     loading,
     noteList,
     pagination,
     createNoteHandle,
     updateNoteHandle,
+    removeNoteHandle,
     setNoteLikeStatusHandle,
     setNoteCollectStatusHandle,
   }

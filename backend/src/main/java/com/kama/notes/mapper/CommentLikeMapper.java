@@ -29,6 +29,16 @@ public interface CommentLikeMapper {
     void delete(@Param("commentId") Integer commentId, @Param("userId") Long userId);
 
     /**
+     * 根据笔记ID删除该笔记下所有评论的点赞记录
+     * 用于删除笔记时清理关联数据，避免产生孤儿记录。
+     * 注意：必须在删除 comment 之前调用（依赖 comment_id 子查询定位）。
+     *
+     * @param noteId 笔记ID
+     * @return 删除记录数
+     */
+    int deleteByNoteId(@Param("noteId") Integer noteId);
+
+    /**
      * 查询用户点赞的评论ID列表
      *
      * @param userId 用户ID

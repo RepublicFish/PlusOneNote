@@ -25,4 +25,9 @@ public class CreateQuestionBody {
 
     @Length(max = 255, message = "examPoint 长度不能超过 255")
     private String examPoint;
+
+    /*
+     * 题目描述
+     */
+    private String description;
 }

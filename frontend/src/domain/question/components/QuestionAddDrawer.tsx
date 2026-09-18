@@ -38,6 +38,7 @@ const QuestionAddDrawer: React.FC<QuestionAddDrawerProps> = ({
         title: selectedQuestion?.title,
         difficulty: selectedQuestion?.difficulty,
         examPoint: selectedQuestion?.examPoint,
+        description: selectedQuestion?.description,
         categoryId: selectedQuestion?.categoryId,
       })
     } else if (mode === 'create') {
@@ -123,6 +124,12 @@ const QuestionAddDrawer: React.FC<QuestionAddDrawerProps> = ({
           rules={[{ min: 2, max: 255, message: '考点长度在 2 - 255 个字符' }]}
         >
           <Input />
+        </Form.Item>
+        <Form.Item label={'题目描述'} name={'description'}>
+          <Input.TextArea
+            rows={6}
+            placeholder="请输入题目描述（支持 Markdown）"
+          />
         </Form.Item>
         <Form.Item label={'所属分类'} name={'categoryId'} required>
           <TreeSelect

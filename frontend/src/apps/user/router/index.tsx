@@ -12,9 +12,13 @@ import {
   USER_INFO,
   USER_NOTE,
   MESSAGE_CENTER,
+  NOTE_CATEGORY,
+  NOTE_CREATE,
 } from './config.ts'
 import { NotFound } from '../../../base/components'
 import HomePage from '../pages/home/HomePage.tsx'
+import NoteCategoryPage from '../pages/noteCategory/NoteCategoryPage.tsx'
+import NoteCreatePage from '../pages/noteCreate/NoteCreatePage.tsx'
 import UserCenterPage from '../pages/userCenter/UserCenterPage.tsx'
 import UserInfo from '../pages/userCenter/info/UserInfo.tsx'
 import UserCollect from '../pages/userCenter/collect/UserCollect.tsx'
@@ -36,6 +40,8 @@ export const UserRouteConfig = (
       <Route path={USER_NOTE} element={<UserNote />} />
     </Route>
     <Route path={QUESTION_SET} element={<QuestionSetPage />} />
+    <Route path={NOTE_CATEGORY} element={<NoteCategoryPage />} />
+    <Route path={NOTE_CREATE} element={<NoteCreatePage />} />
     <Route path={`${QUESTION}/:questionId`} element={<QuestionPage />} />
     <Route path={`${USER_HOME}/:userId`} element={<UserHomePage />} />
     <Route path={`${QUESTION_LIST}`} element={<QuestionListPage />} />

@@ -27,6 +27,11 @@ public class QuestionUserVO {
     private String examPoint;
 
     /*
+     * 题目描述
+     */
+    private String description;
+
+    /*
      * 浏览量
      */
     private Integer viewCount;

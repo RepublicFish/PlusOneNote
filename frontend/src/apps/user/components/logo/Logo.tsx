@@ -6,7 +6,7 @@ import React from 'react'
 const Logo: React.FC = () => {
   return (
     <div className="text-xl font-bold tracking-wide text-gray-800 dark:text-gray-200">
-      卡码笔记
+      加一笔记
     </div>
   )
 }

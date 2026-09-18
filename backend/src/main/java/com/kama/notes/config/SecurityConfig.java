@@ -31,6 +31,10 @@ public class SecurityConfig {
             .csrf().disable()
             .authorizeRequests()
                 .antMatchers("/api/**").permitAll()
+                // 上传的图片通过 /images/** 对外访问，必须放行。
+                // 否则会被下面的 anyRequest().authenticated() 拦截并返回 403，
+                // 导致笔记正文里的图片、用户头像等全部加载失败。
+                .antMatchers("/images/**").permitAll()
                 .anyRequest().authenticated()
             .and()
             .formLogin().disable()

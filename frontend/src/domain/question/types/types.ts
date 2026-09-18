@@ -28,6 +28,9 @@ export interface QuestionEntity {
   /** 题目考点 */
   examPoint?: string | undefined
 
+  /** 题目描述 */
+  description?: string | undefined
+
   /** 浏览量 */
   viewCount: number
 

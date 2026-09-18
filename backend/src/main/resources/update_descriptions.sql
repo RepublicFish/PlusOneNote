@@ -1,0 +1,20 @@
+USE `kamanote_tech`;
+
+UPDATE `question` SET `description` = '给定一个整数数组 nums 和一个整数目标值 target，请你在该数组中找出和为目标值 target 的两个整数，并返回它们的数组下标。你可以假设每种输入只会对应一个答案。' WHERE `title` = '两数之和';
+UPDATE `question` SET `description` = '给你一个数组 nums 和一个值 val，你需要原地移除所有数值等于 val 的元素，并返回移除后数组的新长度。不要使用额外的数组空间，你必须仅使用 O(1) 额外空间并原地修改输入数组。' WHERE `title` = '移除元素';
+UPDATE `question` SET `description` = '给定一个含有 n 个正整数的数组和一个正整数 target，找出该数组中满足其总和大于等于 target 的长度最小的连续子数组，并返回其长度。如果不存在符合条件的子数组，返回 0。' WHERE `title` = '长度最小的子数组';
+UPDATE `question` SET `description` = '给你单链表的头节点 head，请你反转链表，并返回反转后的链表。' WHERE `title` = '反转链表';
+UPDATE `question` SET `description` = '给你一个链表，两两交换其中相邻的节点，并返回交换后链表的头节点。你必须在不修改节点内部的值的情况下完成本题（即只能进行节点交换）。' WHERE `title` = '两两交换链表中的节点';
+UPDATE `question` SET `description` = '给定一个链表的头节点 head，返回链表开始入环的第一个节点。如果链表无环，则返回 null。不允许修改链表。' WHERE `title` = '环形链表 II';
+UPDATE `question` SET `description` = '编写一个函数，其作用是将输入的字符串反转过来。输入字符串以字符数组 s 的形式给出，要求原地修改输入数组、使用 O(1) 的额外空间解决这一问题。' WHERE `title` = '反转字符串';
+UPDATE `question` SET `description` = '给你两个字符串 haystack 和 needle，请你在 haystack 字符串中找出 needle 字符串的第一个匹配项的下标（下标从 0 开始）。如果 needle 不是 haystack 的一部分，则返回 -1。' WHERE `title` = '实现 strStr()';
+UPDATE `question` SET `description` = '给定两个字符串 s 和 t，编写一个函数来判断 t 是否是 s 的字母异位词。字母异位词是通过重新排列不同单词或短语的字母而形成的单词或短语，通常要求所有原字母恰好使用一次。' WHERE `title` = '有效的字母异位词';
+UPDATE `question` SET `description` = '给定两个数组 nums1 和 nums2，返回它们的交集。输出结果中的每个元素一定是唯一的，可以不考虑输出结果的顺序。' WHERE `title` = '两个数组的交集';
+UPDATE `question` SET `description` = '请你仅使用两个栈实现先入先出队列。队列应当支持一般队列支持的所有操作（push、pop、peek、empty）。' WHERE `title` = '用栈实现队列';
+UPDATE `question` SET `description` = '给定一个只包括左括号、右括号、花括号和方括号的字符串 s，判断字符串是否有效。有效字符串需满足：左括号必须用相同类型的右括号闭合，且左括号必须以正确的顺序闭合。' WHERE `title` = '有效的括号';
+UPDATE `question` SET `description` = '给你二叉树的根节点 root，返回它节点值的前序遍历。' WHERE `title` = '二叉树的前序遍历';
+UPDATE `question` SET `description` = '给定一个二叉树，找出其最大深度。二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。' WHERE `title` = '二叉树的最大深度';
+UPDATE `question` SET `description` = '斐波那契数（通常用 F(n) 表示）形成的序列称为斐波那契数列。给定 n，请计算 F(n)。' WHERE `title` = '斐波那契数';
+UPDATE `question` SET `description` = '假设你正在爬楼梯，需要 n 阶你才能到达楼顶。每次你可以爬 1 或 2 个台阶，你有多少种不同的方法可以爬到楼顶呢？' WHERE `title` = '爬楼梯';
+UPDATE `question` SET `description` = '给定两个整数 n 和 k，返回范围 [1, n] 中所有可能的 k 个数的组合。你可以按任意顺序返回答案。' WHERE `title` = '组合';
+UPDATE `question` SET `description` = '给定一个不含重复数字的数组 nums，返回其所有可能的全排列。你可以按任意顺序返回答案。' WHERE `title` = '全排列';

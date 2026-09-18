@@ -58,4 +58,13 @@ public interface CollectionNoteMapper {
     int deleteByCollectionIdAndNoteId(
             @Param("collectionId") Integer collectionId,
             @Param("noteId") Integer noteId);
+
+    /**
+     * 根据 noteId 删除记录（把该笔记从所有收藏夹中移除）
+     * 用于删除笔记时清理关联数据，避免产生孤儿记录
+     *
+     * @param noteId 笔记 ID
+     * @return 删除记录数
+     */
+    int deleteByNoteId(@Param("noteId") Integer noteId);
 }

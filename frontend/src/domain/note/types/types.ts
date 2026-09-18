@@ -23,8 +23,11 @@ export interface NoteEntity {
   /** 笔记作者 ID */
   authorId: string
 
-  /** 笔记对应的问题 ID */
-  questionId: number
+  /** 笔记对应的问题 ID（分类笔记没有题目，此时为空） */
+  questionId?: number
+
+  /** 笔记分类 ID（题目笔记没有分类，此时为空） */
+  categoryId?: number
 
   /** 笔记内容 */
   content: string

@@ -2,12 +2,14 @@
 import { SortOrder } from '../../../base/types'
 import { Author, NoteEntity, UserActions } from './types.ts'
 import { QuestionSummary } from '../../question'
+import { NoteCategory } from '../../noteCategory'
 
 /**
  * 查询笔记列表查询参数
  */
 export interface NoteQueryParams {
   questionId?: number
+  categoryId?: number
   authorId?: string
   collectionId?: number
   sort?: 'create'
@@ -20,7 +22,7 @@ export interface NoteQueryParams {
 /**
  * 返回的笔记列表
  *
- * 包含作者信息、题目信息、展示内容
+ * 包含作者信息、题目信息、笔记分类信息、展示内容
  */
 export type NoteWithRelations = Omit<
   NoteEntity,
@@ -29,16 +31,22 @@ export type NoteWithRelations = Omit<
   needCollapsed: boolean // 是否需要折叠真实的笔记，显示展示内容
   displayContent: string // 展示内容
   author: Author // 作者相关信息
-  question: QuestionSummary // 题目相关信息
+  question?: QuestionSummary // 题目相关信息（分类笔记没有题目）
+  category?: NoteCategory // 笔记分类信息（题目笔记没有分类）
   userActions: UserActions | undefined // 用户操作信息
 }
 
 /**
  * 创建笔记服务参数类型
+ *
+ * questionId 与 categoryId 至少提供一个：
+ * - 传 questionId：题目笔记
+ * - 传 categoryId：分类笔记（不绑定题目）
  */
 export interface CreateNoteParams {
   content: string
-  questionId: number
+  questionId?: number
+  categoryId?: number
 }
 
 /**
